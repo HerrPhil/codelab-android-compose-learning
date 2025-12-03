@@ -43,8 +43,12 @@ class MainActivity : ComponentActivity() {
             val uiState by viewModel.uiState.collectAsState()
 
             // The theme is applied here ...
+            // When dynamic color is false, then colors based on material 3 theme builder output
+            // composed in the Theme.kt file.
+            // When dynamic color is true and Android version is 12+, then colors based on
+            // wallpaper color of the user's device.
 
-            AppTheme {
+            AppTheme(dynamicColor = false) {
 
                 Surface(tonalElevation = 5.dp) {
                     ReplyApp(
