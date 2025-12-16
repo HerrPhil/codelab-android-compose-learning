@@ -20,6 +20,10 @@ buildscript {
         mavenCentral()
     }
 
+    ext {
+        composeNavigationVersion = "2.9.6"
+    }
+
     dependencies {
         classpath "com.android.tools.build:gradle:8.13.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:2.2.20"

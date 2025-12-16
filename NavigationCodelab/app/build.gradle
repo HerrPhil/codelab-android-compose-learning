@@ -98,6 +98,9 @@ dependencies {
     implementation "androidx.activity:activity-compose:1.11.0"
     debugImplementation "androidx.compose.ui:ui-tooling"
 
+    // Compose navigation
+    implementation "androidx.navigation:navigation-compose:2.9.6"
+
     // Testing dependencies
     androidTestImplementation "androidx.arch.core:core-testing:2.2.0"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.7.0"
@@ -105,6 +108,10 @@ dependencies {
 
     // Compose testing dependencies
     androidTestImplementation "androidx.compose.ui:ui-test-junit4"
+
+    // Compose testing navigation
+    androidTestImplementation "androidx.navigation:navigation-testing:$rootProject.composeNavigationVersion"
+
     debugImplementation "androidx.compose.ui:ui-test-manifest"
 }
 

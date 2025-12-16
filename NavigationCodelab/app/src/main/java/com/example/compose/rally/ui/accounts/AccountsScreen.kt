@@ -23,7 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.navigation.navDeepLink
 import com.example.compose.rally.R
+import com.example.compose.rally.SingleAccount
 import com.example.compose.rally.data.UserData
 import com.example.compose.rally.ui.components.AccountRow
 import com.example.compose.rally.ui.components.StatementBody
@@ -62,7 +64,7 @@ fun AccountsScreen(
  */
 @Composable
 fun SingleAccountScreen(
-    accountType: String? = UserData.accounts.first().name
+    accountType: String? = UserData.accounts.first().name,
 ) {
     val account = remember(accountType) { UserData.getAccount(accountType) }
     StatementBody(
