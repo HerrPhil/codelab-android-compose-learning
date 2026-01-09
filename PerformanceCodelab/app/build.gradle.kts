@@ -69,9 +69,12 @@ composeCompiler {
     // This settings enables strong-skipping mode for all module in this project.
     // As an effect, Compose can skip a composable even if it's unstable by comparing it's instance equality (===).
     // TODO Codelab task: Enable Strong Skipping Mode
-    enableStrongSkippingMode = false
+//    enableStrongSkippingMode = false
+    enableStrongSkippingMode = true
 
     // TODO Codelab task: Enable Stability Configuration file
+    stabilityConfigurationFile = project.rootDir.resolve("stability_config.conf")
+
 }
 
 dependencies {
@@ -91,6 +94,10 @@ dependencies {
     implementation(libs.androidx.tracing.ktx)
 
     // TODO Codelab task: Add androidx.runtime-tracing dependency to enable Composition Tracing
+    // Note: Because the runtime-tracing library is part of the Compose BOM, it is not necessary to
+    // specify the version!
+
+    implementation(libs.runtime.tracing) // re-located specifics to libs versions
 
     implementation(libs.coil.compose)
     implementation(libs.androidx.media3.exoplayer)
