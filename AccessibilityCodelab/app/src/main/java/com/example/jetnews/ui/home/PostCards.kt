@@ -25,17 +25,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -47,6 +47,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,8 +64,21 @@ import com.example.jetnews.ui.theme.JetnewsTheme
 @Composable
 fun PostCardHistory(post: Post, navigateToArticle: (String) -> Unit) {
     var openDialog by remember { mutableStateOf(false) }
+    val showFewerLabel = stringResource(R.string.cd_show_fewer)
     Row(
-        Modifier.clickable { navigateToArticle(post.id) }
+        Modifier
+            .clickable(
+                onClickLabel = stringResource(R.string.action_read_article)
+            ) { navigateToArticle(post.id) }
+            .semantics {
+                customActions = listOf(
+                    CustomAccessibilityAction(
+                        label = showFewerLabel,
+                        // action returns boolean to indicate success
+                        action = { openDialog = true; true }
+                    )
+                )
+            }
     ) {
         Image(
             painter = painterResource(post.imageThumbId),
@@ -91,13 +109,26 @@ fun PostCardHistory(post: Post, navigateToArticle: (String) -> Unit) {
             }
         }
         CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurfaceVariant) {
-            Icon(
-                imageVector = Icons.Default.Close,
-                contentDescription = stringResource(R.string.cd_show_fewer),
-                modifier = Modifier
-                    .clickable { openDialog = true }
-                    .size(24.dp)
-            )
+//            Icon(
+//                imageVector = Icons.Default.Close,
+//                contentDescription = stringResource(R.string.cd_show_fewer),
+//                modifier = Modifier
+//                    .clickable { openDialog = true }
+//                    .padding(12.dp)
+//                    .size(24.dp)
+//            )
+
+            // Codelab lesson: easier way to set icon to be clickable and 48 dp
+            // Use IconButton; has minimum touch target of 48 dp.
+            IconButton(
+                modifier = Modifier.clearAndSetSemantics {},
+                onClick = { openDialog = true }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(R.string.cd_show_fewer)
+                )
+            }
         }
     }
     if (openDialog) {
@@ -136,10 +167,14 @@ fun PostCardPopular(
     navigateToArticle: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Codelab: use semantics to set the click label.
+    val readArticleLabel = stringResource(id = R.string.action_read_article)
     Card(
         colors = CardDefaults.cardColors(),
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.size(280.dp, 240.dp),
+        modifier = modifier
+            .size(280.dp, 240.dp)
+            .semantics { onClick(label = readArticleLabel, action = null) },
         onClick = { navigateToArticle(post.id) },
         elevation = CardDefaults.elevatedCardElevation()
     ) {
